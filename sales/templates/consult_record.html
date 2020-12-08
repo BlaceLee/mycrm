@@ -1,0 +1,45 @@
+{% extends 'starter.html' %}
+{% load static %}
+
+{% block content %}
+    <div>
+        <div class="pull-left">
+            <form action="{% url 'add_edit_record' %}" class="col-md-1">
+                <button class="btn btn-primary" style="padding: 1px">增加记录</button>
+            </form>
+        </div>
+
+        <form action="" class="form-inline">
+            <div class="pull-right form-group">
+                <input type="text" placeholder="请输入姓名" class="form-control" name="search_name">
+                <input type="submit" class="btn btn-primary form-control">
+            </div>
+        </form>
+
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th><input type="checkbox" class="all_select" id="is_allchecked">选择</th>
+            <th>编号</th>
+            <th>姓名</th>
+            <th>状态</th>
+            <th>跟进日期</th>
+            <th>编辑</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for record_obj in record_objs %}
+            <tr>
+                <td><input type="checkbox" class=""></td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ record_obj.customer.name }}</td>
+                <td>{{ record_obj.get_status_display }}</td>
+                <td>{{ record_obj.data|date:'Y-m-d H:i:s' }}</td>
+                <td><a href="{% url 'add_edit_record' record_obj.pk %}"><i class="fa fa-edit"></i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {{ page_obj }}
+{% endblock %}

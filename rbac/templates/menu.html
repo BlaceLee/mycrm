@@ -1,0 +1,22 @@
+{#{% for menu in menus %}#}
+{#    <li class="{{ menu.class }}"><a href="{{ menu.permissions__url }}"><i class="{{ menu.permissions__icon }}"></i>#}
+{#        <span>{{ menu.permissions__title }}</span></a></li>#}
+{#{% endfor %}#}
+
+
+<li class="treeview">
+    {% for menu_k, menu_v in menus.items %}
+        <a href="#"><i class="{{ menu_v.icon }}" ></i> <span>{{ menu_v.title }}</span>
+            <span class="pull-right-container">
+{#                <i class="fa fa-angle-left pull-right"></i>#}
+              </span>
+        </a>
+        <ul class="treeview-menu" style="{{ menu_v.display }}">
+            {% for children in menu_v.children %}
+                <li class="{{ children.class }}"><a href="{{ children.url }}">{{ children.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+
+
+</li>

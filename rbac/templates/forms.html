@@ -1,0 +1,26 @@
+{% extends 'starter.html' %}
+{% block css %}
+    <style>
+    ul.icon li{
+        float: left;
+        padding: 10px;
+        padding-left: 0;
+        width: 80px;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+    <form action="" class="form-inline form-group" style="margin-top: 80px;" novalidate method="post">
+    {% csrf_token %}
+        {% for form in menu_forms %}
+            <div>
+            <label for="{{ form.id_for_label }}">{{ form.name }}</label>
+            {{ form }}
+            </div>
+        {% endfor %}
+        {{ role_obj.errors.0 }}
+        <div><button>确定</button></div>
+    </form>
+
+
+{% endblock %}

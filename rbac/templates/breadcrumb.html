@@ -1,0 +1,16 @@
+
+
+
+{% if breadcrumbs %}
+    <li ><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
+    {% if breadcrumbs.children %}
+        <li><a href="{{ breadcrumbs.url }} "><i class="fa fa-dashboard"></i> {{ breadcrumbs.title }}</a></li>
+        <li class="active">{{ breadcrumbs.children.title }}</li>
+    {% else %}
+        <li class="active"><i class="fa fa-dashboard"></i> {{ breadcrumbs.title }}</li>
+    {% endif %}
+{% else %}
+    <li class="active"><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
+{% endif %}
+
+

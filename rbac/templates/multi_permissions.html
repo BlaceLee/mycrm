@@ -1,0 +1,96 @@
+{% extends 'starter.html' %}
+
+{% block content %}
+    <form action="?type=add" method="post">
+        {% csrf_token %}
+        {{ add_formset.management_form }}
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>URL</th>
+                <th>URL别名</th>
+                <th>一级菜单</th>
+                <th>所属菜单</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for foo in add_formset %}
+                <tr>
+                    <td>{{ foo.title }}</td>
+                    <td>{{ foo.url }}</td>
+                    <td>{{ foo.url_name }}</td>
+                    <td>{{ foo.primary_menus }}</td>
+                    <td>{{ foo.parent }}</td>
+                </tr>
+                {{ foo.errors.0 }}
+            {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit">
+
+    </form>
+
+    <form action="?type=update" method="post">
+        {% csrf_token %}
+        {{ update_formset.management_form }}
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>URL</th>
+                <th>URL别名</th>
+                <th>一级菜单</th>
+                <th>所属菜单</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for foo in update_formset %}
+                <tr>
+                {{ foo.id }}
+                    <td>{{ foo.title }}</td>
+                    <td>{{ foo.url }}</td>
+                    <td>{{ foo.url_name }}</td>
+                    <td>{{ foo.primary_menus }}</td>
+                    <td>{{ foo.parent }}</td>
+                </tr>
+                {{ foo.errors.0 }}
+            {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit">
+
+    </form>
+
+    <form action="?type=del" method="post">
+        {% csrf_token %}
+        {{ del_formset.management_form }}
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>URL</th>
+                <th>URL别名</th>
+                <th>一级菜单</th>
+                <th>所属菜单</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for foo in del_formset %}
+                <tr>
+                {{ foo.id }}
+                    <td>{{ foo.title }}</td>
+                    <td>{{ foo.url }}</td>
+                    <td>{{ foo.url_name }}</td>
+                    <td>{{ foo.primary_menus }}</td>
+                    <td>{{ foo.parent }}</td>
+                </tr>
+                {{ foo.errors.0 }}
+            {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit">
+
+    </form>
+
+{% endblock %}

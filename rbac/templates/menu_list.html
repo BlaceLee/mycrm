@@ -1,0 +1,118 @@
+{% extends 'starter.html' %}
+
+{% block css %}
+    <style>
+        tbody tr.menu_active {
+            background-color: #f1f7fd;
+            border-left: 3px solid #fdc00f;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+    <div style="margin-top: 20px">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-book"></i>菜单管理
+                    <a href="{% url 'menu_add' %}" class="btn btn-success btn-sm pull-right" style="padding: 0 0"><i
+                            class="fa
+                    fa-plus"></i>新建</a>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>标题</th>
+                            <th>图标</th>
+                            <th>编辑</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for primary_menu_obj in primary_menu_objs %}
+                            <tr class="{% if mid == primary_menu_obj.pk %}
+                                    menu_active
+                                {% endif %}">
+
+                                <td><a href="{% url 'menu_list' %}?mid={{ primary_menu_obj.pk }} "
+                                >{{ primary_menu_obj.title }}</a></td>
+                                <td><i class="fa {{ primary_menu_obj.icon }}"></i></td>
+                                <td><a href="{% url 'menu_edit' primary_menu_obj.pk %}"><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'menu_del' primary_menu_obj.pk %}"><i class="fa
+                                    fa-close"></i></a></td>
+                            </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-edit"></i>权限管理
+                    <div class="pull-right">
+                        <a href="" class="btn btn-success btn-sm "><i class="fa fa-plus">新建</i></a>
+                        <a href="{% url 'multi_permission' %}" class="btn btn-warning btn-sm "><i class="fa fa-cut">批量操作</i></a>
+                    </div>
+
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>URL</th>
+                            <th>菜单</th>
+                            <th>所属菜单</th>
+                            <th>编辑</th>
+                        </tr>
+                        </thead>
+                        <tbody class="">
+                        {% for key, permission in permissions_dic.items %}
+                            <tr class="menu" style="background-color: rgba(121,255,105,0.33)">
+
+                                <td id="title"> <i class="fa fa-caret-down"></i>{{ permission.title }}</td>
+                                <td>{{ permission.url }}</td>
+                                <td>{{ permission.primary_menus__title|default:'' }}</td>
+                                <td>{{ permission.parent__title|default:'' }}</td>
+                                <td>
+                                    <a href=""><i class="fa fa-edit"></i></a>
+                                    <a href=""><i class="fa fa-close"></i></a>
+                                </td>
+                            </tr>
+                            {% for i in permission.children %}
+                                <tr>
+                                <td>{{ i.title }}</td>
+                                <td>{{ i.url }}</td>
+                                <td>{{ i.primary_menus__title|default:''  }}</td>
+                                <td>{{ i.parent__title|default:'' }}</td>
+                                <td>
+                                    <a href=""><i class="fa fa-edit"></i></a>
+                                    <a href=""><i class="fa fa-close"></i></a>
+                                </td>
+                                </tr>
+                            {% endfor %}
+
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script>
+    $('.menu').click(function () {
+        $(this).nextUntil('.menu').toggleClass('hide');
+        $(this).children('#title').children().toggleClass('fa-caret-right')
+    })
+    </script>
+{% endblock %}

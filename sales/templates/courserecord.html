@@ -1,0 +1,87 @@
+{% extends 'starter.html' %}
+{% load static %}
+{% load mytags %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12" style="padding: 2px">
+
+            <form action="#" class="col-md-1 pull-left">
+                <button class="btn btn-primary" style="padding: 1px">增加客户</button>
+            </form>
+            <form action="#" class="navbar-form navbar-left pull-right" role="search"
+                  style="margin: 0">
+                <div class="dropdown pull-left">
+                    <select name="op" class="form-control op" style="width: 80px">
+                        {% for key, values in customers_key.items %}
+                            <option value="{{ key }}__contains">{{ values.label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search" name="content" value="">
+                </div>
+                <button type="submit" class="btn btn-default">查询</button>
+            </form>
+
+        </div>
+
+    </div>
+
+    <form action="" class="form-inline" method="post">
+        {% csrf_token %}
+        <div class="row" style="padding: 2px">
+            <div class="col-md-12">
+                <div class="col-md-1" style="padding: 1px; width: 46px">
+                    <button class="btn btn-primary" style="padding: 5px">确定</button>
+                </div>
+                <div class="form-group col-md-1" style="padding: 0">
+                    <select name="batch" id="" class=" batch-op form-control" style="padding: 0">
+                        <option value="bluk_study" selected>批量生成学习记录</option>
+                    </select>
+                </div>
+                <div class="col-md-1" style="padding: 0">
+                    <select name="user_id" id="" class="hide private-user form-control ">
+                        {% for obj in user_obj %}
+                            <option value="{{ obj.id }}">{{ obj.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th><input type="checkbox" class="all_select" id="is_allchecked">选择</th>
+                <th>编号</th>
+                <th>课程号</th>
+                <th>课程名</th>
+                <th>班级</th>
+                <th>教师</th>
+                <th>编辑</th>
+                <th>生成学习记录</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for course_record_obj in course_record_objs %}
+                <tr>
+                    <td><input type="checkbox" class="check" name="course_ids" , value="{{ course_record_obj.pk }}"></td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ course_record_obj.day_num }}</td>
+                    <td>{{ course_record_obj.course_title }}</td>
+                    <td>{{ course_record_obj.re_class.get_course_display }}</td>
+                    <td>{{ course_record_obj.teacher.username }}</td>
+                    <td><a href="#"> <i class="fa fa-edit"></i></a> </td>
+                    <td><a href="{% url 'study_record' %}?id={{ course_record_obj.pk }}">查看学习记录</a></td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+                {{ page_obj }}
+    </form>
+
+
+
+{% endblock %}

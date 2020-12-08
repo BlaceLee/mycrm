@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://www.jq22.com/demo/jquery-Sharelink20151012/ -->
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>登陆</title>
+    {#<link rel="stylesheet" href="./登陆丨Sharelink_files/style.css">#}
+    <link rel="stylesheet" href="{% static 'plugins/style.css' %}">
+</head>
+<body>
+<div class="login-container">
+    <h1>ShareLink</h1>
+    <div class="connect">
+        <p>Link the world. Share to world.</p>
+    </div>
+    <form action="" method="post" id="loginForm" novalidate="novalidate">
+        {% csrf_token %}
+        {% for obj in login_obj %}
+            {{ obj }}
+            <div><span style="color: red;font-size: 10px;">{{ obj.errors.0 }}</span></div>
+        {% endfor %}
+        <div><span style="color: red;font-size: 10px;">{{ error }}</span></div>
+        <button id="submit" type="submit">登 陆</button>
+    </form>
+
+</div>
+
+<script src="{% static 'plugins/jquery.min.js' %}"></script>
+{#<script src="./登陆丨Sharelink_files/jquery.min.js(1).下载"></script>#}
+<script src="{% static 'plugins/common.js' %}"></script>
+
+<script src="{% static 'plugins/supersized.3.2.7.min.js' %}"></script>
+<script src="{% static 'plugins/supersized-init.js' %}"></script>
+
+<script src="{% static 'plugins/jquery.validate.min.js' %}"></script>

@@ -1,0 +1,15 @@
+{% extends 'starter.html' %}
+
+{% block content %}
+    <form action="" class="form-inline form-group" style="margin-top: 80px;" novalidate method="post">
+    {% csrf_token %}
+        {% for foo in role_form %}
+            <label for="{{ foo.id_for_label }}">{{ foo.name }}</label>
+            {{ foo }}
+        {% endfor %}
+        {{ role_obj.errors.0 }}
+        <button>确定</button>
+    </form>
+
+
+{% endblock %}

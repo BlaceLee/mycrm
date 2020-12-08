@@ -1,0 +1,120 @@
+{% extends 'starter.html' %}
+
+
+{% block css %}
+    <style>
+        .panel-body ul li a.menu_active {
+            {#background-color: #f1f7fd;#}
+            {#border-left: 3px solid #fdc00f;#}
+            color: red;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+    <div style="margin-top: 20px">
+        <div class="col-md-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-book"></i>用户
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        {% for user_obj in user_objs %}
+
+                            <li><a href="{% url 'permission_show' %}?uid={{ user_obj.id }}"
+                             class="{% if uid|safe == user_obj.id|safe %}
+                                menu_active
+                            {% endif %} ">{{ user_obj.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <form action="?uid={% if uid %}{{ uid }}{% endif %}&type=save_role" method="post">
+                    {% csrf_token %}
+                    <div class="panel-heading">
+                        <i class="fa fa-edit"></i>角色
+                        <div class="pull-right">
+                            {% if uid %}
+                                <button class="btn btn-success btn-sm" style="padding: 4px 6px">保存</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <tbody class="">
+                            {% for role_obj in role_objs %}
+                                <tr class="menu">
+                                    <td id="title">
+                                        <a href="{% url 'permission_show' %}?uid={% if uid %}{{ uid }}{% endif %}&rid={{ role_obj.id }}"
+                                        >{{ role_obj.name }}</a>
+
+                                    </td>
+                                    <td><input type="checkbox" name="has_role" value="{{ role_obj.id }}"
+                                            {% if role_obj.id in user_role_list %}
+                                               checked
+                                            {% endif %} ></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="panel panel-default">
+                <form action="?uid={% if uid %}{{ uid }}{% endif %}&rid={{ rid|safe }}&type=save_permission" method="post">
+                    {% csrf_token %}
+                    <div class="panel-heading">
+                        <i class="fa fa-edit"></i>权限
+                        <div class="pull-right">
+                            {% if rid %}
+                                <button class="btn btn-success btn-sm" style="padding: 4px 6px">保存</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        {% for k, v in menu_dict.items %}
+                        <div style="background-color: #8aa4af"class="menu "><h4 class="fa fa-caret-down"
+                        >{{ v.title }}</h4></div>
+                            {% for v1 in v.children %}
+                                <div><input type="checkbox" name="has_permission"
+                                            value="{{ v1.id }}" {% if v1.id in user_role_permissions_list %}
+                                    checked
+                                {% endif %}>{{ v1.title }}</div>
+
+                                <div>{% for v2 in v1.children %}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="has_permission"
+                                                                         value="{{ v2.id }}"
+                                            {% if v2.id in user_role_permissions_list %}
+                                    checked
+                                {% endif %}
+                                    >{{ v2.title }}
+                                {% endfor %}</div>
+
+                            {% endfor %}
+
+                        {% endfor %}
+
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+    $('.menu').click(function () {
+        $(this).children('h4').toggleClass('fa-caret-right')
+        $(this).nextUntil('.menu').toggleClass('hide')
+    })
+    </script>
+{% endblock %}
